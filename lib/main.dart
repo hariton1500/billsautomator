@@ -1,7 +1,10 @@
 import 'package:bills/Pages/mainpage.dart';
+import 'package:bills/globals.dart';
 import 'package:flutter/material.dart';
 
-void main() {
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  token = await getToken();
   runApp(const MainApp());
 }
 
