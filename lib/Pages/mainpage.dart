@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:bills/Models/company.dart';
+import 'package:bills/Pages/companypage.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 
@@ -46,7 +47,7 @@ class _MainpageState extends State<Mainpage> {
                 child: Text('Загрузить csv')
               ),
               // show preview of csv if it is loaded
-              if (isCsvLoaded) Text(csvData.skip(1).take(10).toString()),
+              if (isCsvLoaded) Text(csvData.skip(1).take(1).toString()),
               if (isCsvLoaded) Row(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
@@ -72,7 +73,7 @@ class _MainpageState extends State<Mainpage> {
                   DataColumn(label: Text('Аккаунтов')),
                   DataColumn(label: Text('Действия')),
                 ],
-                rows: companies.map((e) => DataRow(cells: [
+                rows: companies.take(10).map((e) => DataRow(cells: [
                   DataCell(Text(e.id.toString())),
                   DataCell(Text(e.title)),
                   DataCell(Text(e.inn.toString())),
@@ -84,13 +85,18 @@ class _MainpageState extends State<Mainpage> {
                         onPressed: () {
                           // TODO: add edit company
                         },
-                        child: Text('Изменить'),
+                        child: Text('Open'),
                       ),
                       ElevatedButton(
                         onPressed: () {
-                          // TODO: add delete company
+                          // open in new page
+                          Navigator.of(context).push(
+                            MaterialPageRoute(
+                              builder: (context) => CompanyPage(company: e),
+                            )
+                          );
                         },
-                        child: Text('Удалить'),
+                        child: Text('Open'),
                       ),
                     ],
                   ))
@@ -120,17 +126,19 @@ class _MainpageState extends State<Mainpage> {
     for (var line in csvData.skip(1)) {
       List<String> cells = line.split(';');
       try {
+        print(cells);
         Company company = Company(
           id: int.parse(cells[0]),
           title: cells[1],
           inn: int.parse(cells[4]),
           price: double.parse(cells[5].toString().split(' ')[2]),
+          days: int.parse(cells[6])
           //countAccs: 1,
         );
         companies.add(company);
         
       } catch (e) {
-        print(e);
+        print('error');
       }
     }
     return companies;
