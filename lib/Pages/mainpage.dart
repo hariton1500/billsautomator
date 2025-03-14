@@ -18,12 +18,35 @@ class _MainpageState extends State<Mainpage> {
   List<String> csvData = [];
   bool isParsed = false;
   List<Company> companies = [];
-  String tmpToken = '';
+  String tmpToken = '', tmpElbaToken = '';
 
   @override
   Widget build(BuildContext context) {
     print(token);
+    print(elbaToken);
     return Scaffold(
+      appBar: AppBar(
+        actions: [
+          ElevatedButton(
+            onPressed: () {
+              clearToken(key: 'token');
+              setState(() {
+                token = '';
+              });
+            },
+            child: Text('clear token')
+          ),
+          ElevatedButton(
+            onPressed: () {
+              clearToken(key: 'albaToken');
+              setState(() {
+                elbaToken = '';
+              });
+            },
+            child: Text('clear elba token')
+          ),
+        ],
+      ),
         body: SingleChildScrollView(
       child: Padding(
         padding: const EdgeInsets.all(20.0),
@@ -38,13 +61,35 @@ class _MainpageState extends State<Mainpage> {
                     height: 50,
                     width: 100,
                     child: TextField(
+                      decoration: InputDecoration(labelText: 'Token'),
                       onChanged: (value) => tmpToken = value,
                     ),
                   ),
                   ElevatedButton(
-                    onPressed: saveToken(tmpToken),
+                    onPressed: () {saveToken(record: tmpToken, key: 'token');setState(() {
+                      token = tmpToken;
+                    });},
                     child: Text('Save'),
                   )
+                ],
+              ),
+            if (elbaToken!.length < 5)
+              Row(
+                children: [
+                  SizedBox(
+                    height: 50,
+                    width: 100,
+                    child: TextField(
+                      decoration: InputDecoration(labelText: 'Elba token'),
+                      onChanged: (value) => tmpElbaToken = value,
+                    ),
+                  ),
+                  ElevatedButton(
+                    onPressed: () {saveToken(record: tmpElbaToken, key: 'elbaToken');setState(() {
+                      elbaToken = tmpElbaToken;
+                    });},
+                    child: Text('save'),
+                  ),
                 ],
               ),
             ElevatedButton(

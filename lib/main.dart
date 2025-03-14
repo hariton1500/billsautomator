@@ -4,7 +4,8 @@ import 'package:flutter/material.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  token = await getToken();
+  token = await getToken(key: 'token');
+  elbaToken = await getToken(key: 'albaToken');
   runApp(const MainApp());
 }
 

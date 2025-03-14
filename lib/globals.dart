@@ -1,15 +1,21 @@
 import 'package:shared_preferences/shared_preferences.dart';
 
 //String get token1 => File('hide.log').readAsStringSync();
-Future<String> getToken() async {
+Future<String> getToken({required String key}) async {
   SharedPreferences prefs = await SharedPreferences.getInstance();
-  return prefs.getString('token') ?? '';
+  return prefs.getString(key) ?? '';
 }
 
-String? token;
+String? token, elbaToken;
 
-saveToken(String tmpToken) {
+saveToken({required String key, required String record}) async {
   SharedPreferences.getInstance().then((prefs) {
-    prefs.setString('token', tmpToken);
+    prefs.setString(key, record);
+  });
+}
+
+clearToken({required String key}) async {
+  SharedPreferences.getInstance().then((prefs) {
+    prefs.remove(key);
   });
 }
