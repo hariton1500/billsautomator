@@ -151,7 +151,7 @@ class _MainpageState extends State<Mainpage> {
                                 onPressed: () {
                                   // TODO: add edit company
                                 },
-                                child: Text('Open'),
+                                child: Text('Счет'),
                               ),
                               ElevatedButton(
                                 onPressed: () {
