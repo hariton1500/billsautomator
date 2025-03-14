@@ -17,7 +17,7 @@ class _MainpageState extends State<Mainpage> {
   bool isCsvLoaded = false;
   List<String> csvData = [];
   bool isParsed = false;
-  List<Company> companies = [];
+  //List<Company> companies = [];
   String tmpToken = '', tmpElbaToken = '';
 
   @override
@@ -26,6 +26,7 @@ class _MainpageState extends State<Mainpage> {
     print(elbaToken);
     return Scaffold(
       appBar: AppBar(
+        title: Text('Компаний: ${companies.length}'),
         actions: [
           ElevatedButton(
             onPressed: () {
@@ -117,15 +118,16 @@ class _MainpageState extends State<Mainpage> {
                     '  ||  Количество столбцов: ${csvData[0].split(';').length}  ||  '),
                 ElevatedButton(
                   onPressed: () {
+                    parseCsv(csvData);
                     setState(() {
                       isParsed = true;
-                      companies = parseCsv(csvData);
                     });
+                    saveCompanies();
                   },
                   child: Text('Парсинг в таблицу'),
                 ),
               ]),
-            if (isParsed)
+            if (companies.isNotEmpty)
               DataTable(
                 columns: [
                   DataColumn(label: Text('ID')),
@@ -142,7 +144,7 @@ class _MainpageState extends State<Mainpage> {
                           DataCell(Text(e.title)),
                           DataCell(Text(e.inn.toString())),
                           DataCell(Text(e.price.toString())),
-                          DataCell(Text(e.countAccs.toString())),
+                          DataCell(Text(e.id!.length.toString())),
                           DataCell(Row(
                             children: [
                               ElevatedButton(
@@ -183,14 +185,14 @@ class _MainpageState extends State<Mainpage> {
     return lines;
   }
 
-  List<Company> parseCsv(List<String> csvData) {
-    List<Company> companies = [];
+  parseCsv(List<String> csvData) {
+    //Set<Company> companies = [];
     for (var line in csvData.skip(1)) {
       List<String> cells = line.split(';');
       try {
         print(cells);
         Company company = Company(
-            id: int.parse(cells[0]),
+            id: <int>{int.parse(cells[0])},
             title: cells[1],
             inn: int.parse(cells[4]),
             price: double.parse(cells[5].toString().split(' ')[2]),
@@ -202,6 +204,6 @@ class _MainpageState extends State<Mainpage> {
         print('error');
       }
     }
-    return companies;
+    //return companies;
   }
 }

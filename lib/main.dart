@@ -6,6 +6,11 @@ Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   token = await getToken(key: 'token');
   elbaToken = await getToken(key: 'albaToken');
+  try {
+    await loadCompanies();
+  } catch (e) {
+    print(e);
+  }
   runApp(const MainApp());
 }
 
